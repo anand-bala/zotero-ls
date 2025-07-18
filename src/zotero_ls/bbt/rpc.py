@@ -1,5 +1,7 @@
 """Fetch information from a running intance of Better BibTeX"""
 
+from __future__ import annotations
+
 import asyncio
 import enum
 from dataclasses import dataclass, field
@@ -29,7 +31,7 @@ class ReadyResponse(BaseModel):
 class ScanAuxResponse(BaseModel): ...
 
 
-ExportItemsAdapter = TypeAdapter(tuple[list[str], Translators, None | str] | tuple[list[str], Translators])
+ExportItemsAdapter: TypeAdapter = TypeAdapter(tuple[list[str], Translators, None | str] | tuple[list[str], Translators])  # pyright: ignore[reportMissingTypeArgument]
 
 
 @dataclass
@@ -43,6 +45,16 @@ class Client:
             )
         )
     )
+
+    @classmethod
+    def make_juris_m(cls) -> Client:
+        return Client(
+            JsonRpcClient(
+                aiohttp.ClientSession(
+                    base_url="http://127.0.0.1:24119/",
+                )
+            )
+        )
 
     async def _send(self, method: str, data: None | list[JsonValue] = None) -> JsonValue | None:
         return await self.rpc.send_request("/better-bibtex/json-rpc", method=method, data=data)
@@ -83,9 +95,7 @@ if __name__ == "__main__":
     async def main() -> None:
         rpc = client.rpc
         print(f"{rpc.closed=}")
-        resp = await client.is_ready()
-        print(resp)
-        resp = await client.export_items(["balakrishnan2025monitoring"], Translators.BIBLATEX)
-        print(resp)
+        print("client.is_ready = ", await client.is_ready())
+        print("exported items = ", await client.export_items(["balakrishnan2025monitoring"], Translators.BIBLATEX))
 
     loop.run_until_complete(main())

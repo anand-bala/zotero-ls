@@ -7,18 +7,24 @@ authors = [{ name = "Anand Balakrishnan", email = "anandbala1597@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
   "aiohttp>=3.12.14",
+  "aiosqlite>=0.21.0",
+  "click>=8.2.1",
   "lsprotocol>=2025.0.0",
   "pydantic>=2.11.7",
-  "pygls>=2.0.0a5",
+  "pygls>=2.0.0a6",
   "rich>=14.0.0",
-  "sqlmodel>=0.0.24",
+  "sqlalchemy[asyncio]>=2.0.41",
   "typing-extensions>=4.14.1",
+  "urllib3>=2.5.0",
   "xdg-base-dirs>=6.0.2",
 ]
 
 
 [dependency-groups]
 dev = ["ipdb", "ipython", "mypy", "ruff", "ty"]
+
+[project.scripts]
+zotero_ls = "zotero_ls.cli:main"
 
 [build-system]
 requires = ["hatchling"]

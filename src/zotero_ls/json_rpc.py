@@ -83,7 +83,11 @@ class JsonRpcClient:
             assert response.id is None
             raise JsonRpcError(response.error)
         assert response.result is not None
-        assert request.id == response.id, rich.print(request.model_dump(), response.model_dump(), sep="\n")
+        try:
+            assert request.id == response.id
+        except AssertionError as e:
+            rich.print(request.model_dump(), response.model_dump(), sep="\n")
+            raise e
         return response.result
 
     async def notify(self, url: str, method: str, data: Params = None) -> None:

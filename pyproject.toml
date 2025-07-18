@@ -6,9 +6,13 @@ readme = "README.md"
 authors = [{ name = "Anand Balakrishnan", email = "anandbala1597@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
+  "aiohttp>=3.12.14",
   "lsprotocol>=2025.0.0",
+  "pydantic>=2.11.7",
   "pygls>=2.0.0a5",
+  "rich>=14.0.0",
   "sqlmodel>=0.0.24",
+  "typing-extensions>=4.14.1",
   "xdg-base-dirs>=6.0.2",
 ]
 

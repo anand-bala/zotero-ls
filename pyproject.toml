@@ -1,0 +1,51 @@
+[project]
+name = "zotero-ls"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "Anand Balakrishnan", email = "anandbala1597@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = [
+  "lsprotocol>=2025.0.0",
+  "pygls>=2.0.0a5",
+  "sqlmodel>=0.0.24",
+  "xdg-base-dirs>=6.0.2",
+]
+
+
+[dependency-groups]
+dev = ["ipdb", "ipython", "mypy", "ruff", "ty"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib"
+testpaths = ["tests"]
+
+[tool.mypy]
+# ignore_missing_imports = true
+show_error_codes = true
+
+[tool.ruff]
+line-length = 127
+
+[tool.ruff.lint]
+extend-select = ["E", "F", "W", "N", "B", "ANN", "PYI", "I"]
+extend-ignore = ["F722"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"*.py" = ["B905", "E203", "E501", "W291", "W293"]
+"*.pyi" = ["B", "E501", "E701"]
+
+[tool.pyright]
+include = ["src"]
+pythonVersion = "3.12"
+pythonPlatform = "All"
+reportUnknownMemberType = false
+reportUnknownParameterType = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
+reportAny = false

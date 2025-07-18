@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+make dev
+watch_file pyproject.toml
+watch_file uv.lock
+source ./.venv/bin/activate

@@ -3,7 +3,8 @@ name = "zotero-ls"
 version = "0.1.0"
 description = "A language server to query Zotero for citations"
 readme = "README.md"
-authors = [{ name = "Anand Balakrishnan", email = "anandbala1597@gmail.com" }]
+authors = [{ name = "Anand Balakrishnan" }]
+
 requires-python = ">=3.12"
 dependencies = [
   "aiohttp>=3.12.14",
@@ -16,7 +17,7 @@ dependencies = [
   "sqlalchemy[asyncio]>=2.0.41",
   "typing-extensions>=4.14.1",
   "urllib3>=2.5.0",
-  "xdg-base-dirs>=6.0.2",
+  # "xdg-base-dirs>=6.0.2",
 ]
 
 

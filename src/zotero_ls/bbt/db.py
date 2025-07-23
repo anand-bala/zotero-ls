@@ -70,14 +70,20 @@ class Database:
         db_args = urllib.parse.urlencode(dict(mode="ro", nolock=1, uri="true"))
 
         db_uri = f"file:{db_path.absolute()}?{db_args}"
-        self.engine = create_async_engine(f"sqlite+aiosqlite:///{db_uri}", echo=True)
+        self.engine = create_async_engine(f"sqlite+aiosqlite:///{db_uri}")
 
-    async def fetch_citekeys(self, *, buffer_size: int = 200) -> AsyncIterable[tuple[str, CitationKey]]:
+    async def fetch_citekeys(
+        self, *, library_id: int | str = 1, buffer_size: int = 200
+    ) -> AsyncIterable[tuple[str, CitationKey]]:
         async with AsyncSession(self.engine) as session:
-            statement = select(_CitationKeyEntry).execution_options(yield_per=buffer_size)
+            statement = (
+                select(_CitationKeyEntry)
+                .where(_CitationKeyEntry.library_id == library_id)
+                .execution_options(yield_per=buffer_size)
+            )
             rows = await session.stream_scalars(statement)
             async for row in rows:
-                yield (row.key, CitationKey(row.citation_key, row.key, row.library_id))
+                yield (row.citation_key, CitationKey(row.citation_key, row.key, row.library_id))
 
 
 if __name__ == "__main__":

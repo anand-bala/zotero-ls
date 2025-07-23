@@ -1,7 +1,7 @@
 [project]
 name = "zotero-ls"
 version = "0.1.0"
-description = "Add your description here"
+description = "A language server to query Zotero for citations"
 readme = "README.md"
 authors = [{ name = "Anand Balakrishnan", email = "anandbala1597@gmail.com" }]
 requires-python = ">=3.12"

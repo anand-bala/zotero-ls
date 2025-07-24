@@ -1,7 +1,6 @@
 # pyright: reportUnusedFunction=false
 from __future__ import annotations
 
-import atexit
 import logging
 import re
 import sys
@@ -84,7 +83,8 @@ class App:
         @server.feature(lsp.SHUTDOWN)
         async def _shutdown(_params: None) -> None:
             await self.close()
-            assert self.bbt_rpc.rpc.closed
+            if self.bbt_rpc is not None:
+                assert self.bbt_rpc.rpc.closed
 
         @server.feature(
             lsp.TEXT_DOCUMENT_COMPLETION,

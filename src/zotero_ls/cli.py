@@ -100,7 +100,7 @@ class App:
                 # Query the database for new items
                 assert self.bbt_db is not None, "BetterBibTeX database connection not initialized"
                 items = [
-                    lsp.CompletionItem(key, kind=lsp.CompletionItemKind.Operator)
+                    lsp.CompletionItem(key, kind=lsp.CompletionItemKind.Reference)
                     async for (key, _) in self.bbt_db.fetch_citekeys()
                 ]
                 return items

@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -13,6 +12,7 @@ from pygls.lsp.server import LanguageServer
 
 import zotero_ls.bbt as bbt
 from zotero_ls import __version__
+from zotero_ls.filetypes import get_cite_patterns
 
 
 @dataclass
@@ -22,17 +22,6 @@ class InitOptions:
 
     juris_m: bool = False
     """Flag to let the language server know if it should assume the Juris-M port for Better BibTeX"""
-
-
-CITE_PATTERNS: re.Pattern = re.compile(
-    "|".join(  # alternation between patterns
-        map(
-            lambda pat: f"(?:{pat})",  # non-capture group for the sub-pattern
-            [r"\\(?:[a-zA-Z]*cite|Cite)[a-zA-Z]*\*?(?:\s*\[[^]]*\]|\s*\<[^>]*\>){0,2}\s*\{[^}]*$"],
-        )
-    )
-)
-"""Compiled regex pattern for potential citation triggers"""
 
 
 @dataclass
@@ -96,7 +85,10 @@ class App:
             # To verify if the current trigger is a citation command, we will first have to check if the line matches the pattern
             document = server.workspace.get_text_document(params.text_document.uri)
             current_line = document.lines[params.position.line].strip()
-            if CITE_PATTERNS.search(current_line) is not None:
+
+            cite_patterns = get_cite_patterns("tex")
+
+            if cite_patterns.search(current_line) is not None:
                 # Query the database for new items
                 assert self.bbt_db is not None, "BetterBibTeX database connection not initialized"
                 items = [
